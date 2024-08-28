@@ -102,7 +102,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -230,6 +230,48 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- Lua
+  {
+    'abecodes/tabout.nvim',
+    lazy = false,
+    config = function()
+      require('tabout').setup {
+        tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
+        backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
+        act_as_tab = true, -- shift content if tab out is not possible
+        act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+        default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
+        default_shift_tab = '<C-d>', -- reverse shift default action,
+        enable_backwards = true, -- well ...
+        completion = false, -- if the tabkey is used in a completion pum
+        tabouts = {
+          { open = "'", close = "'" },
+          { open = '"', close = '"' },
+          { open = '`', close = '`' },
+          { open = '(', close = ')' },
+          { open = '[', close = ']' },
+          { open = '{', close = '}' },
+        },
+        ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
+        exclude = {}, -- tabout will ignore these filetypes
+      }
+    end,
+    dependencies = { -- These are optional
+      'nvim-treesitter/nvim-treesitter',
+      'L3MON4D3/LuaSnip',
+      'hrsh7th/nvim-cmp',
+    },
+    opt = true, -- Set this to true if the plugin is optional
+    event = 'InsertCharPre', -- Set the event to 'InsertCharPre' for better compatibility
+    priority = 1000,
+  },
+  {
+    'L3MON4D3/LuaSnip',
+    keys = function()
+      -- Disable default tab keybinding in LuaSnip
+      return {}
+    end,
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -844,13 +886,13 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'rebelot/kanagawa.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd 'colorscheme kanagawa-dragon'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -934,8 +976,8 @@ require('lazy').setup({
   --
   require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
