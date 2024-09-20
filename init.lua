@@ -113,6 +113,8 @@ vim.opt.showmode = false
 -- Indent Sizing
 vim.opt.autoindent = true
 
+vim.opt.colorcolumn = '80'
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
